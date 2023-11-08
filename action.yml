@@ -1,0 +1,90 @@
+name: 'Deploy to Pantheon'
+description: 'Uses action-deploy-to-remote-repository and Pantheon terminus to deploy files/folders from a local GitHub action repository to a Pantheon environment.'
+author: 'alleyinteractive'
+branding:
+  icon: 'cloud-lightning'
+  color: 'yellow'
+inputs:
+  # Upstream action-deploy-to-remote-repository inputs
+  base_directory:
+    description: 'Base directory for rsync'
+    required: false
+  destination_directory:
+    description: 'Destination directory for rsync in remote repository'
+    required: false
+  exclude_list:
+    description: 'Comma-separated list of files and directories to exclude from sync'
+    required: false
+    default: '.git, .gitmodules, .pantheon'
+  ssh_key:
+    description: 'SSH key to use for remote repository authentication.'
+    required: true
+  # Pantheon-specific inputs
+  pantheon_site:
+    description: 'Name of Pantheon site to deploy to.'
+    required: true
+  pantheon_site_id:
+    description: 'Pantheon site ID to deploy to.'
+    required: true
+  pantheon_machine_token:
+    description: 'Pantheon machine token to use.'
+    required: true
+  terminus_version:
+    description: 'Version of terminus to use.'
+    default: '3.2.1'
+  pantheon_env_name:
+    description: 'Pantheon environment name to deploy to.'
+    required: true
+  autopromote:
+    description: 'Whether to automatically promote the dev environment to test and live after deployment.'
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Sync to Pantheon
+      uses: alleyinteractive/action-deploy-to-remote-repository@v1
+      with:
+        remote_repo: 'ssh://codeserver.dev.${{ inputs.pantheon_site_id }}@codeserver.dev.${{ inputs.pantheon_site_id }}.drush.in:2222/~/repository.git'
+        base_directory: ${{ inputs.base_directory }}
+        destination_directory: ${{ inputs.destination_directory }}
+        exclude_list: ${{ inputs.exclude_list }}
+        ssh-key: ${{ inputs.ssh_key }}
+        # Special case. If inputs.pantheon_env_name is 'production' or 'dev', use 'master' instead.
+        remote_branch: ${{ inputs.pantheon_env_name == 'production' && 'master' || inputs.pantheon_env_name == 'dev' && 'master' || inputs.pantheon_env_name }}
+        pantheon: 'true'
+    - name: Install terminus
+      shell: bash
+      run: |
+        mkdir -p /tmp/terminus && cd /tmp/terminus
+        curl -L "https://github.com/pantheon-systems/terminus/releases/download/${{ inputs.terminus_version }}/terminus.phar" --output terminus
+        chmod +x terminus
+        sudo mv terminus /usr/local/bin/terminus
+    - name: Authenticate with Terminus
+      shell: bash
+      run: terminus auth:login --machine-token=${{ inputs.pantheon_machine_token }}
+    - name: "Deploy to Pantheon environment ${{ inputs.pantheon_env_name }}"
+      shell: bash
+      run: |
+        # If the pantheon_env_name is 'production' or 'dev', deploy to dev.
+        if [ "${{ inputs.pantheon_env_name }}" == "production" || "${{ inputs.pantheon_env_name }}" == "dev" ]; then
+          echo "Deploying to dev environment."
+          terminus env:deploy ${{ inputs.pantheon_site }}.dev --note="$(git log -1 --pretty=%B)"
+        else # Otherwise, deploy to the specified (multisite) environment.
+          echo "Deploying to ${{ inputs.pantheon_env_name }} environment."
+          terminus env:deploy ${{ inputs.pantheon_site }}.${{ inputs.pantheon_env_name }} --note="$(git log -1 --pretty=%B)"
+        fi
+    - name: Autopromote dev to test
+      # Skipped if autopromote is false.
+      if: ${{ inputs.autopromote == 'true' }}
+      shell: bash
+      run: |
+        echo "Autopromoting dev to test."
+        terminus env:deploy ${{ inputs.pantheon_site }}.test --note="$(git log -1 --pretty=%B)"
+    - name: Autopromote test to live
+      # Skipped if autopromote is false.
+      if: ${{ inputs.autopromote == 'true' }}
+      shell: bash
+      run: |
+        echo "Autopromoting test to live."
+        terminus env:deploy ${{ inputs.pantheon_site }}.live --note="$(git log -1 --pretty=%B)"
