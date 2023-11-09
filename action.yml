@@ -66,8 +66,8 @@ runs:
     - name: "Deploy to Pantheon environment ${{ inputs.pantheon_env_name }}"
       shell: bash
       run: |
-        # If the pantheon_env_name is 'production' or 'dev', deploy to dev.
-        if [ "${{ inputs.pantheon_env_name }}" == "production" || "${{ inputs.pantheon_env_name }}" == "dev" ]; then
+        # If the pantheon_env_name is 'production', 'master', or 'dev', deploy to dev.
+        if [ "${{ inputs.pantheon_env_name }}" == "production" || "${{ inputs.pantheon_env_name }}" == "master" || "${{ inputs.pantheon_env_name }}" == "dev" ]; then
           echo "Deploying to dev environment."
           terminus env:deploy ${{ inputs.pantheon_site }}.dev --note="$(git log -1 --pretty=%B)"
         else # Otherwise, deploy to the specified (multisite) environment.
@@ -75,15 +75,15 @@ runs:
           terminus env:deploy ${{ inputs.pantheon_site }}.${{ inputs.pantheon_env_name }} --note="$(git log -1 --pretty=%B)"
         fi
     - name: Autopromote dev to test
-      # Skipped if autopromote is false.
-      if: ${{ inputs.autopromote == 'true' }}
+      # Skipped if autopromote is false or we're not deploying to the dev environment.
+      if: ${{ inputs.autopromote == 'true' && (inputs.pantheon_env_name == 'production' || inputs.pantheon_env_name == 'master' || inputs.pantheon_env_name == 'dev') }}
       shell: bash
       run: |
         echo "Autopromoting dev to test."
         terminus env:deploy ${{ inputs.pantheon_site }}.test --note="$(git log -1 --pretty=%B)"
     - name: Autopromote test to live
-      # Skipped if autopromote is false.
-      if: ${{ inputs.autopromote == 'true' }}
+      # Skipped if autopromote is false or we're not deploying to the dev environment.
+      if: ${{ inputs.autopromote == 'true' && (inputs.pantheon_env_name == 'production' || inputs.pantheon_env_name == 'master' || inputs.pantheon_env_name == 'dev') }}
       shell: bash
       run: |
         echo "Autopromoting test to live."
