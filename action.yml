@@ -1,5 +1,5 @@
 name: 'Deploy to Pantheon'
-description: 'Uses action-deploy-to-remote-repository and Pantheon terminus to deploy files/folders from a local GitHub action repository to a Pantheon environment.'
+description: 'Deploys local GitHub repo to Pantheon using action-deploy-to-remote-repository and Pantheon terminus.'
 author: 'alleyinteractive'
 branding:
   icon: 'cloud-lightning'
