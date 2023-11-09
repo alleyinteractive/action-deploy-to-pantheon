@@ -1,0 +1,27 @@
+name: Documentation Update
+description: "Report something in the project documentation that is incorrect or otherwise inaccurate."
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this documentation update request!
+        Before submitting your issue, please ensure that you have read our [Code of Conduct](https://github.com/alleyinteractive/.github/blob/main/CODE_OF_CONDUCT.md) and you have read through existing issues (opened and closed) so as to avoid creating duplicates. 🙏
+
+  - type: textarea
+    attributes:
+      id: documentation-inaccuracy-description
+      label: Description of the documentation inaccuracy
+      description: Please write a brief description of the documentation that you believe should be updated, including what you expect to see and what is currently included in the docs.
+      placeholder: |
+        Within <some section> of the documentation, <some text> is not correct.
+        It says <x>, but looking at the code, it should say <y>.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional Information
+      description: |
+        Provide any additional information such as logs, links, gists, screenshots, etc, so that it facilitates our understanding of the inaccuracy.
