@@ -76,7 +76,7 @@ rooted at `wp-content` but still want to version control their Pantheon configur
 - Defaults to `.git, .gitmodules, .pantheon`.
 - Inherited from `action-deploy-to-remote-repository`.
 
-### `ssh_key`
+### `ssh-key`
 
 - SSH key to use for remote repository authentication.
 - Accepts a string (private key).

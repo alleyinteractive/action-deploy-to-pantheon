@@ -16,7 +16,7 @@ inputs:
     description: 'Comma-separated list of files and directories to exclude from sync'
     required: false
     default: '.git, .gitmodules, .pantheon'
-  ssh_key:
+  ssh-key:
     description: 'SSH key to use for remote repository authentication.'
     required: true
   # Pantheon-specific inputs
@@ -49,7 +49,7 @@ runs:
         base_directory: ${{ inputs.base_directory }}
         destination_directory: ${{ inputs.destination_directory }}
         exclude_list: ${{ inputs.exclude_list }}
-        ssh-key: ${{ inputs.ssh_key }}
+        ssh-key: ${{ inputs.ssh-key }}
         # Special case. If inputs.pantheon_env_name is 'production' or 'dev', use 'master' instead.
         remote_branch: ${{ inputs.pantheon_env_name == 'production' && 'master' || inputs.pantheon_env_name == 'dev' && 'master' || inputs.pantheon_env_name }}
         pantheon: 'true'
