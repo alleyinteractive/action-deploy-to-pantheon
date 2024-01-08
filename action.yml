@@ -67,7 +67,7 @@ runs:
       shell: bash
       run: |
         # If the pantheon_env_name is 'production', 'master', or 'dev', deploy to dev.
-        if [ "${{ inputs.pantheon_env_name }}" == "production" || "${{ inputs.pantheon_env_name }}" == "master" || "${{ inputs.pantheon_env_name }}" == "dev" ]; then
+        if [ "${{ inputs.pantheon_env_name }}" == "production" ] || [ "${{ inputs.pantheon_env_name }}" == "master" ] || [ "${{ inputs.pantheon_env_name }}" == "dev" ]; then
           echo "Deploying to dev environment."
           terminus env:deploy ${{ inputs.pantheon_site }}.dev --note="$(git log -1 --pretty=%B)"
         else # Otherwise, deploy to the specified (multisite) environment.
