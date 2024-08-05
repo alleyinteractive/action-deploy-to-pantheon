@@ -31,7 +31,7 @@ inputs:
     required: true
   terminus_version:
     description: 'Version of terminus to use.'
-    default: '3.2.1'
+    default: '3.5.1'
   pantheon_env_name:
     description: 'Pantheon environment name to deploy to.'
     required: true
@@ -63,17 +63,6 @@ runs:
     - name: Authenticate with Terminus
       shell: bash
       run: terminus auth:login --machine-token=${{ inputs.pantheon_machine_token }}
-    - name: "Deploy to Pantheon environment ${{ inputs.pantheon_env_name }}"
-      shell: bash
-      run: |
-        # If the pantheon_env_name is 'production', 'master', or 'dev', deploy to dev.
-        if [ "${{ inputs.pantheon_env_name }}" == "production" ] || [ "${{ inputs.pantheon_env_name }}" == "master" ] || [ "${{ inputs.pantheon_env_name }}" == "dev" ]; then
-          echo "Deploying to dev environment."
-          terminus env:deploy ${{ inputs.pantheon_site }}.dev --note="$(git log -1 --pretty=%B)"
-        else # Otherwise, deploy to the specified (multisite) environment.
-          echo "Deploying to ${{ inputs.pantheon_env_name }} environment."
-          terminus env:deploy ${{ inputs.pantheon_site }}.${{ inputs.pantheon_env_name }} --note="$(git log -1 --pretty=%B)"
-        fi
     - name: Autopromote dev to test
       # Skipped if autopromote is false or we're not deploying to the dev environment.
       if: ${{ inputs.autopromote == 'true' && (inputs.pantheon_env_name == 'production' || inputs.pantheon_env_name == 'master' || inputs.pantheon_env_name == 'dev') }}
