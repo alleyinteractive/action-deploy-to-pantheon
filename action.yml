@@ -63,13 +63,6 @@ runs:
     - name: Authenticate with Terminus
       shell: bash
       run: terminus auth:login --machine-token=${{ inputs.pantheon_machine_token }}
-    - name: "Deploy to Pantheon environment ${{ inputs.pantheon_env_name }}"
-      # Skipped if autopromote is false or we're not deploying to the dev environment.
-      if: ${{ inputs.autopromote == 'true' && (inputs.pantheon_env_name == 'production' || inputs.pantheon_env_name == 'master' || inputs.pantheon_env_name == 'dev') }}
-      shell: bash
-      run: |
-        echo "Deploying to dev environment."
-        terminus env:deploy ${{ inputs.pantheon_site }}.dev --note="$(git log -1 --pretty=%B)"
     - name: Autopromote dev to test
       # Skipped if autopromote is false or we're not deploying to the dev environment.
       if: ${{ inputs.autopromote == 'true' && (inputs.pantheon_env_name == 'production' || inputs.pantheon_env_name == 'master' || inputs.pantheon_env_name == 'dev') }}
