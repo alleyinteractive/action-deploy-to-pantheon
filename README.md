@@ -32,7 +32,7 @@ jobs:
     # ...
 
     - name: Deploy to Pantheon
-      uses: alleyinteractive/action-deploy-to-pantheon@v1.0.0
+      uses: alleyinteractive/action-deploy-to-pantheon@develop
       with:
         pantheon_site: 'your-site-name'
         pantheon_site_id: '12345678-YOUR-SITE-ID00-123456789123'
