@@ -32,12 +32,12 @@ jobs:
     # ...
 
     - name: Deploy to Pantheon
-      uses: alleyinteractive/action-deploy-to-pantheon@v1
+      uses: alleyinteractive/action-deploy-to-pantheon@v1.0.0
       with:
         pantheon_site: 'your-site-name'
         pantheon_site_id: '12345678-YOUR-SITE-ID00-123456789123'
         pantheon_machine_token: ${{ secrets.SSH_KEY }}
-        ssh_key: ${{ secrets.SSH_KEY }}
+        ssh-key: ${{ secrets.SSH_KEY }}
         destination_directory: 'wp-content/'
         autopromote: 'true'
         pantheon_env_name: ${{ github.ref_name }}
