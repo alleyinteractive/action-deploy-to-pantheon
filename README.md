@@ -55,18 +55,22 @@ rooted at `wp-content` but still want to version control their Pantheon configur
 > Specify using `with` keyword. See all upstream inputs for [action-deploy-to-remote-repository](https://github.com/alleyinteractive/action-deploy-to-remote-repository).
 
 ### `base_directory`
+**NOTE:** _You likely want a
+  trailing slash if you're syncing from a subdirectory. (eg. `wp-content/`)_
+
 
 - Specify the base directory to sync from.
 - Accepts a string.
-- Defaults to the root of the repository (`.`). **NOTE** You likely want a
-  trailing slash if you're syncing a subdirectory. (eg. `wp-content/`)
+- Defaults to the root of the repository (`.`).
 - Inherited from `action-deploy-to-remote-repository`.
 
 ### `destination_directory`
+**NOTE:** _You likely want a
+  trailing slash if you're syncing to a subdirectory. (eg. `wp-content/`)_
 
 - Specify the destination directory to sync to.
 - Accepts a string.
-- Defaults to the root of the remote repository (`.`).
+- Defaults to wp-content within the Pantheon repository (`wp-content/`).
 - Inherited from `action-deploy-to-remote-repository`.
 
 ### `exclude_list`
