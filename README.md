@@ -72,8 +72,8 @@ rooted at `wp-content` but still want to version control their Pantheon configur
 ### `exclude_list`
 
 - Specify a comma-separated list of files and directories to exclude from sync.
-- Accepts a string. (e.g. `.git, .gitmodules`)
-- Defaults to `.git, .gitmodules, .pantheon`.
+- Accepts a string. (e.g. `.git, .gitmodules, uploads`)
+- Defaults to `.git, .gitmodules, .pantheon, uploads`.
 - Inherited from `action-deploy-to-remote-repository`.
 
 ### `ssh-key`
