@@ -6,6 +6,7 @@ _Notes_:
 
 - This action depends upon the upstream action [action-deploy-to-remote-repository](https://github.com/alleyinteractive/action-deploy-to-remote-repository) and it's associated requirements (eg. [ssh-key](https://github.com/alleyinteractive/action-deploy-to-remote-repository#ssh-key).
 - This action assumes that `production` branches are deployed to Pantheon `dev` environment (via a git commit to Pantheon's `master` branch), and all other `branch` names are deployed to a Pantheon multisite `branch` environment of the same name (unless overridden with [pantheon_env_name](#pantheon_env_name)).
+- This action assumes that your Pantheon site is set to `git` mode and not `sftp` mode.
 - If autopromote is set, the action will use `terminus env:deploy` to advance from `dev` -> `test` -> `live` Pantheon environments.
 - There are special considerations for the [.pantheon folder](#pantheon-folder).
 
