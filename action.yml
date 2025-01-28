@@ -9,13 +9,15 @@ inputs:
   base_directory:
     description: 'Base directory for rsync'
     required: false
+    default: '.'
   destination_directory:
-    description: 'Destination directory for rsync in remote repository'
+    description: 'Destination directory for rsync in remote repository including trailing slash'
     required: false
+    default: 'wp-content/'
   exclude_list:
     description: 'Comma-separated list of files and directories to exclude from sync'
     required: false
-    default: '.git, .gitmodules, .pantheon'
+    default: '.git, .gitmodules, .pantheon, uploads'
   ssh-key:
     description: 'SSH key to use for remote repository authentication.'
     required: true
