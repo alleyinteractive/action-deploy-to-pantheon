@@ -45,7 +45,7 @@ runs:
   using: 'composite'
   steps:
     - name: Sync to Pantheon
-      uses: alleyinteractive/action-deploy-to-remote-repository@v1
+      uses: alleyinteractive/action-deploy-to-remote-repository@v2
       with:
         remote_repo: 'ssh://codeserver.dev.${{ inputs.pantheon_site_id }}@codeserver.dev.${{ inputs.pantheon_site_id }}.drush.in:2222/~/repository.git'
         base_directory: ${{ inputs.base_directory }}
