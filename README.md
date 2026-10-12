@@ -110,7 +110,9 @@ rooted at `wp-content` but still want to version control their Pantheon configur
 
 - Specify the version of [terminus](https://docs.pantheon.io/terminus) to use.
 - Accepts a string.
-- Defaults to `'3.2.1'`.
+- Defaults to `'4.3.3'`.
+- Terminus runs on the GitHub runner, so it uses the PHP version your workflow sets up, not the PHP version of your Pantheon site.
+- Terminus 4 requires PHP 8.2 or newer. If your workflow uses PHP 8.1 or older, set this to `'3.5.1'`.
 
 ### `pantheon_env_name`
 
