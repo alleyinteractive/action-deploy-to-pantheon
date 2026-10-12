@@ -33,7 +33,7 @@ inputs:
     required: true
   terminus_version:
     description: 'Version of terminus to use.'
-    default: '3.5.1'
+    default: '4.3.3'
   pantheon_env_name:
     description: 'Pantheon environment name to deploy to.'
     required: true
